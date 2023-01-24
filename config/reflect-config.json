@@ -192,5 +192,17 @@
         "parameterTypes": []
       }
     ]
-  }
+  },
+  {"name": "com.sun.jna.Function",
+   "allPublicMethods" : true,
+   "allPublicFields" : true,
+   "allPublicConstructors" : true},
+  {"name": "com.sun.jna.NativeLibrary",
+   "allPublicMethods" : true,
+   "allPublicFields" : true,
+   "allPublicConstructors" : true},
+  {"name": "java.lang.Double",
+   "allPublicMethods" : true,
+   "allPublicFields" : true,
+   "allPublicConstructors" : true}
 ]

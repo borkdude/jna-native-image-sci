@@ -1,21 +1,20 @@
 (ns com.phronemophobic.native-image.jna
-  (:import com.sun.jna.Pointer
-           com.sun.jna.NativeLibrary
-           com.sun.jna.Function
-           com.sun.jna.Memory
-           com.sun.jna.IntegerType)
+  (:require
+   [sci.core :as sci])
   (:gen-class))
 
 (set! *warn-on-reflection* true)
 
-(def void Void/TYPE)
+(def ctx (delay (sci/init {:classes {'com.sun.jna.Function (Class/forName "com.sun.jna.Function")
+                                     'com.sun.jna.NativeLibrary (Class/forName "com.sun.jna.NativeLibrary")
+                                     'java.lang.Double Double}
+                           :imports {'Double 'java.lang.Double}})))
 
-(def clib (delay (NativeLibrary/getInstance "c")))
-
-(defn- cos [d]
-  (let [cos-fn (.getFunction ^NativeLibrary @clib "cos")]
-    (.invoke ^Function cos-fn Double/TYPE (clojure.core/to-array [d]))))
-
-(defn -main [& args]
-  (println "cosine of 42 is" (cos 42.0)))
+(defn -main [& [_e expr]]
+  ;; example expression
+  '(let [clib (com.sun.jna.NativeLibrary/getInstance "c")
+         cos-fn (.getFunction clib "cos")]
+     (.invoke cos-fn Double/TYPE (into-array Object [42.0])))
+  (let [ctx @ctx]
+    (prn (sci/eval-string* ctx expr))))
 
